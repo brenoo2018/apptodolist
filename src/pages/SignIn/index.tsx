@@ -3,12 +3,16 @@ import { View, Text, Image } from 'react-native';
 
 import logoImage from '../../assets/logo.png';
 
+import { Container, Title } from './styles';
+
 const SignIn: React.FC = () => {
   return (
-    <View>
-      <Text>SignIn</Text>
+    <Container>
+      <Title>To-Do List</Title>
       <Image source={logoImage} />
-    </View>
+
+      <Title>Faça seu login</Title>
+    </Container>
   );
 };
 
