@@ -44,12 +44,12 @@ const AuthProvider: React.FC = ({ children }) => {
   // carrega os dados do usuário salvos no async storage
   useEffect(() => {
     async function loadStorageUserAuthenticate(): Promise<void> {
-      // const token = await AsyncStorage.getItem('@desafiotodolist:token');
-      // const user = await AsyncStorage.getItem('@desafiotodolist:user');
+      // const token = await AsyncStorage.getItem('@Todolist:token');
+      // const user = await AsyncStorage.getItem('@Todolist:user');
 
       const [token, user] = await AsyncStorage.multiGet([
-        '@desafiotodolist:token',
-        '@desafiotodolist:user',
+        '@Todolist:token',
+        '@Todolist:user',
       ]);
 
       if (token[1] && user[1]) {
