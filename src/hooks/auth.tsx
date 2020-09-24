@@ -56,7 +56,7 @@ const AuthProvider: React.FC = ({ children }) => {
         /**
          * envia automaticamente o token a cada requisição
          */
-        api.defaults.headers.Authorization = `Bearer ${token}`;
+        api.defaults.headers.Authorization = `Bearer ${token[1]}`;
         setDataUserAuthenticate({ token: token[1], user: JSON.parse(user[1]) });
       }
 
@@ -81,7 +81,7 @@ const AuthProvider: React.FC = ({ children }) => {
     /**
      * envia automaticamente o token a cada requisição
      */
-    api.defaults.headers.Authorization = `Bearer ${token}`;
+    api.defaults.headers.Authorization = `Bearer ${token[1]}`;
 
     await AsyncStorage.multiSet([
       ['@Todolist:token', token],
@@ -102,7 +102,12 @@ const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user: dataUserAuthenticate.user, signIn, signOut, loading }}
+      value={{
+        user: dataUserAuthenticate,
+        signIn,
+        signOut,
+        loading,
+      }}
     >
       {children}
     </AuthContext.Provider>

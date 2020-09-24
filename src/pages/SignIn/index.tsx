@@ -34,7 +34,7 @@ interface SignFormatData {
 }
 
 const SignIn: React.FC = () => {
-  const { signIn, user } = useAuth();
+  const { signIn } = useAuth();
   const [errorForm, setErrorForm] = useState<SignFormatData>(
     {} as SignFormatData,
   );
@@ -64,6 +64,7 @@ const SignIn: React.FC = () => {
         password: data.password,
       });
     } catch (error) {
+      console.log(error);
       if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
 
@@ -75,7 +76,7 @@ const SignIn: React.FC = () => {
 
         return;
       }
-      console.log(error);
+
       Alert.alert(
         'Erro na autenticação',
         'Ocorreu um erro ao fazer o login, cheque as credenciais',

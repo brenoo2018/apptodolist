@@ -74,6 +74,7 @@ const SignUp: React.FC = () => {
 
         navigation.navigate('SignIn');
       } catch (error) {
+        console.log(error);
         if (error instanceof Yup.ValidationError) {
           const errors = getValidationErrors(error);
 
