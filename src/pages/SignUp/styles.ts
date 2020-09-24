@@ -37,3 +37,11 @@ export const BackToSignInText = styled.Text`
   font-family: 'RobotoSlab-Regular';
   margin-left: 16px;
 `;
+
+export const TextError = styled.Text`
+  padding-left: 16px;
+  margin-bottom: 6px;
+  color: #c53030;
+  font-size: 16px;
+  font-family: 'RobotoSlab-Regular';
+`;
