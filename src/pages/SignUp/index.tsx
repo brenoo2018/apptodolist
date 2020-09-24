@@ -14,10 +14,13 @@ import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
-import logoImage from '../../assets/logo.png';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
+
 import getValidationErrors from '../../utils/getValidationErrors';
+import api from '../../services/api';
+
+import logoImage from '../../assets/logo.png';
 
 import {
   Container,
@@ -43,52 +46,56 @@ const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const navigation = useNavigation();
 
-  const handleSignUp = useCallback(async (data: SignUpFormatData) => {
-    try {
-      formRef.current?.setErrors({});
+  const handleSignUp = useCallback(
+    async (data: SignUpFormatData) => {
+      try {
+        formRef.current?.setErrors({});
 
-      const schema = Yup.object().shape({
-        username: Yup.string().required('Nome de usuário obrigatório'),
-        email: Yup.string()
-          .required('E-mail obrigatório')
-          .email('Digite um e-mail válido'),
-        password: Yup.string().min(6, 'No mínimo 6 dígitos'),
-      });
+        const schema = Yup.object().shape({
+          username: Yup.string().required('Nome de usuário obrigatório'),
+          email: Yup.string()
+            .required('E-mail obrigatório')
+            .email('Digite um e-mail válido'),
+          password: Yup.string().min(6, 'No mínimo 6 dígitos'),
+        });
 
-      await schema.validate(data, {
-        abortEarly: false,
-      });
+        await schema.validate(data, {
+          abortEarly: false,
+        });
 
-      // console.log(data);
+        // console.log(data);
 
-      // await api.post('/users', data);
+        await api.post('/users/create', data);
 
-      Alert.alert(
-        'Cadastro realizado com sucesso !',
-        'você já pode fazer login na aplicação.',
-      );
+        Alert.alert(
+          'Cadastro realizado com sucesso !',
+          'você já pode fazer login na aplicação.',
+        );
 
-      navigation.navigate('SignIn');
-    } catch (error) {
-      if (error instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(error);
+        navigation.navigate('SignIn');
+      } catch (error) {
+        if (error instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(error);
 
-        formRef.current?.setErrors(errors);
+          formRef.current?.setErrors(errors);
 
-        console.log(errors);
+          console.log(errors);
 
-        const { username, email, password } = errors;
+          const { username, email, password } = errors;
 
-        setErrorForm({ username, email, password });
+          setErrorForm({ username, email, password });
 
-        return;
+          return;
+        }
+
+        Alert.alert(
+          'Erro no Cadastro',
+          'Ocorreu um erro ao fazer o cadastro, tente novamente',
+        );
       }
-      Alert.alert(
-        'Erro no Cadastro',
-        'Ocorreu um erro ao fazer o cadastro, tente novamente',
-      );
-    }
-  }, []);
+    },
+    [navigation],
+  );
 
   return (
     <>
