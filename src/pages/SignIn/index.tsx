@@ -18,6 +18,7 @@ import logoImage from '../../assets/logo.png';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import getValidationErrors from '../../utils/getValidationErrors';
+import { useAuth } from '../../hooks/auth';
 
 import {
   Container,
@@ -33,6 +34,7 @@ interface SignFormatData {
 }
 
 const SignIn: React.FC = () => {
+  const { signIn, user } = useAuth();
   const [errorForm, setErrorForm] = useState<SignFormatData>(
     {} as SignFormatData,
   );
@@ -56,14 +58,11 @@ const SignIn: React.FC = () => {
       await schema.validate(data, {
         abortEarly: false,
       });
-      // console.log(data);
 
-      // signIn({
-      //   email: data.email,
-      //   password: data.password,
-      // });
-
-      // navegação
+      signIn({
+        email: data.email,
+        password: data.password,
+      });
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
@@ -76,6 +75,7 @@ const SignIn: React.FC = () => {
 
         return;
       }
+      console.log(error);
       Alert.alert(
         'Erro na autenticação',
         'Ocorreu um erro ao fazer o login, cheque as credenciais',
