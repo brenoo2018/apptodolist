@@ -5,7 +5,9 @@ import React, {
   useState,
   useEffect,
 } from 'react';
+import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+
 import api from '../services/api';
 
 interface StateUserAuthenticate {
@@ -68,27 +70,39 @@ const AuthProvider: React.FC = ({ children }) => {
 
   // método de login recebendo as credenciais de acesso e salvando no async storage
   const signIn = useCallback(async ({ email, password }) => {
-    const response = await api.post('/sessions', {
-      email,
-      password,
-    });
+    try {
+      const response = await api.post('/sessions', {
+        email,
+        password,
+      });
 
-    const { token, user } = response.data;
+      if (response.data.message) {
+        //retornar erro
+        throw new Error(response.data.message);
+      }
 
-    // await AsyncStorage.setItem('@Todolist:token', token);
-    // await AsyncStorage.setItem('@Todolist:user', JSON.stringify(user));
+      const { token, user } = response.data;
 
-    /**
-     * envia automaticamente o token a cada requisição
-     */
-    api.defaults.headers.Authorization = `Bearer ${token[1]}`;
+      // await AsyncStorage.setItem('@Todolist:token', token);
+      // await AsyncStorage.setItem('@Todolist:user', JSON.stringify(user));
 
-    await AsyncStorage.multiSet([
-      ['@Todolist:token', token],
-      ['@Todolist:user', JSON.stringify(user)],
-    ]);
+      /**
+       * envia automaticamente o token a cada requisição
+       */
+      api.defaults.headers.Authorization = `Bearer ${token[1]}`;
 
-    setDataUserAuthenticate({ token, user });
+      await AsyncStorage.multiSet([
+        ['@Todolist:token', token],
+        ['@Todolist:user', JSON.stringify(user)],
+      ]);
+
+      setDataUserAuthenticate({ token, user });
+    } catch (error) {
+      Alert.alert(
+        'Erro na autenticação',
+        'Ocorreu um erro ao fazer o login, cheque as credenciais',
+      );
+    }
   }, []);
 
   const signOut = useCallback(async () => {
