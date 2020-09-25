@@ -28,3 +28,5 @@ Este aplicativo foi desenvolvido com a finalidade de resolver o desafio proposto
 - Entre na pasta: `> src/services/api` - troque a baseUrl para o endereço do emulador ou do seu smarphone físico
 - Por fim: `> yarn start` - para inicializar o metro bundle
 - Em seguida: `> yarn android` - ou `> yarn ios` para instalar o app
+
+- [Back-end da aplicação](https://github.com/brenoo2018/backend)
