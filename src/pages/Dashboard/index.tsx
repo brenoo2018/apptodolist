@@ -15,7 +15,6 @@ import {
   Todo,
   Task,
   RemoveTaskButton,
-  Header,
   ButtonLogout,
 } from './styles';
 
@@ -29,6 +28,7 @@ interface Task {
 const Dashboard: React.FC = () => {
   const [newTask, setNewTasK] = useState('');
   const [tasks, setTasks] = useState<Task[]>([]);
+  console.log(tasks);
   const [loading, setLoading] = useState(false);
   const { user, signOut } = useAuth();
 
@@ -58,7 +58,7 @@ const Dashboard: React.FC = () => {
 
       const todo = response.data;
 
-      setTasks(todo);
+      setTasks([...tasks, todo]);
       setNewTasK('');
       setLoading(false);
       Keyboard.dismiss();
